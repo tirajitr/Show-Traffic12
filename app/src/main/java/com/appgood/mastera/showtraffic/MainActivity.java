@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         //ListView Controller
         //Setup Array Type Easy
-        int[] iconInts = new int[20];
+        final int[] iconInts = new int[20];
         iconInts[0] = R.drawable.traffic_01;
         iconInts[1] = R.drawable.traffic_02;
         iconInts[2] = R.drawable.traffic_03;
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         iconInts[19] = R.drawable.traffic_20;
 
         //Setup Array from xml
-        String[] titleStrings = getResources().getStringArray(R.array.title);
-        String[] detailLongStrings = getResources().getStringArray(R.array.detail);
+        final String[] titleStrings = getResources().getStringArray(R.array.title);
+        final String[] detailLongStrings = getResources().getStringArray(R.array.detail);
 
         //การตัดคำ
         String[] detailShortStrings = new String[detailLongStrings.length];
@@ -81,6 +82,19 @@ public class MainActivity extends AppCompatActivity {
         //Create ListView
         trafficAdapter trafficAdapter = new trafficAdapter(this,iconInts, titleStrings, detailShortStrings);
         listView.setAdapter(trafficAdapter);
+
+        //Active When Click ListView
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("Title", titleStrings[position]);
+                intent.putExtra("Icon", iconInts[position]);
+                intent.putExtra("Detail", detailLongStrings[position]);
+                startActivity(intent);
+            }
+        });
+
 
 
     }   // Main Method
